@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lottery</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    * {
+    font-family: Helvetica, sans-serif;
+    font-style: italic;
+    margin: auto;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    height: 100vh;
+    background-color: #F7F7F7;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  
+
+  
+  .main-content {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .modal-container {
+    position: absolute;
+    z-index: 5;
+    height: 100vh;
+    width:100%;
+    display: none;
+    background-color: none;
+    justify-content:center;
+    align-items:center;
+  }
+
+  .modal-alert {
+    height: 500px;
+    width: 800px;
+    border-radius:20px;
+    background-color: #000;
+  }
+
+/** header **/
+.header {
+    height: 70;
+    font-weight: bold;
+    color: #707070;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .header-title {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  h1 {
+    margin: 0;
+    text-align: center;
+    font-size: 48px;
+    margin-top: 20px;
+  }
+  .header-left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .header-line {
+    width: 110px;
+    border-radius: 3px;
+    height: 6px;
+    background-color: #B5C401;
+  }
+  
+  .header-button-home {
+    text-decoration: none;
+    font-size: 20px;
+    color: #707070;
+    margin-left: 70px;
+  }
+  
+  .header {
+    border-bottom: 2px solid #EBEBEB;
+  }
+  
+  .header-left  a {
+    font-size: 20px;
+    margin-left: 40px; 
+    color: #707070;
+    text-decoration: none;
+    line-height: 70px;
+  }
+  
+  .header-icon {
+    padding-left: 5px;
+    vertical-align: middle;
+  
+  }
+
+
+/** cart **/
+.cart-container {
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  margin-top: 58px;
+  border: 1px solid #E2E2E2;
+  border-radius: 10px;
+  justify-content: space-between;
+}
+  
+  .cart-container h2 {   
+    font-size: 24px;
+    margin: 20px 0 20px 14px;
+  }
+  
+  .cart-container .value {
+    justify-content: left;
+    margin: 0;
+    display: flex;
+    padding: 0;
+  }
+  
+  .cart-container .value .value-cart {
+    font-style: normal;
+    font-weight: normal;
+    margin-left: 14px;
+  }
+  
+  .cart-container .value .totalCart {
+    font-style: normal;
+    font-weight: normal;
+    margin-left: 0;
+  }
+  .container-cart {
+    background-color: #FFFFFF;
+  }
+  
+  .saveButton {
+    width: 320px;
+    height: 80px;
+    border: none;
+    font-size: 32px;
+    font-weight: bold;
+    color: #27C383;
+    background-color:  #F4F4F4 0% 0% no-repeat padding-box;
+  }
+  
+  
+  .lotteryCard {
+    background-color: #FFFFFF;
+    display: flex;
+    justify-content: flex-start;
+    margin: 0 auto;
+    width: 300px;
+    height: 70px;
+    margin-top: 30px;
+    border-radius: 10px;
+  
+  }
+  
+  .lotteryCard img {
+    display: inline-block;
+    width: 32px;
+    margin: 8px;
+    cursor: pointer;
+  }
+  
+  .textNumbers {
+    color: #868686;
+    font-weight: bold;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+  
+  .textPrice {
+    color: #868686;
+    font-style: normal;
+  }
+  
+  .textName {
+    font-weight: bold;
+    margin-right: 20px;
+  }
+  
+  .backgroundNumber {
+    justify-content: center;
+    padding: 0 10px;
+    max-width: 80%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .containerPrice {
+    display: flex;
+    justify-content: left;
+  }
+  
+/** Footer **/
+footer {
+  display: flex;
+  justify-content: center;
+  height: 50px;
+  width: 100%;
+  margin-top: 110px;
+  position: relative;
+  border-top: 2px solid #EBEBEB;
+
+}
+
+footer span {
+  font-style: normal;
+  color: #707070;
+  font-size: 16px;
+  margin-top: 12px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="modal-container">
+    <div class="modal-alert">
+    </div>
+  </div>
+  <div class="container">
+    <div class="header">
+      <div class="header-title">
+        <div class="logo">
+          <h1>TGL</h1>
+          <div class="header-line"></div>
+        </div>
+      </div>
+    </div>
+    <div class="main-content">
+      <div class="lottery-container">
+        <div class="cart-container">
+          <div class="cart-container-two">
+       
+            <div class="container-cart" data-js="numbersLottery">
+            </div>
+            <div class="value">
+              <h2 class="value-cart">
+                <strong>{{username}} </strong>Seja Bem vindo!
+              </h2>
+            </div>
+          </div>
+          <div>
+          
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    <footer>
+      <span>Copyright 2020 Luby Software</span>
+    </footer>
+  </div>
+  <script type="text/javascript" src="script.js"></script>
+</body>
+</html>
