@@ -9,8 +9,6 @@ class BetController {
   async index({ auth }) {
 
     const user_id = auth.user.id;
- 
-
     const bets = await Bet.query()
       .where({ user_id })
       .with('types', builder => {
@@ -34,6 +32,7 @@ class BetController {
       var total = 0;
 
       for (let index = 0; index < bets.length; index++) {
+
         const bet = bets[index];
 
         const type = await Games.query()
@@ -68,7 +67,6 @@ class BetController {
             }}
           )
         }
-
   
         console.log(!bet.numbers.split(',').every(isBigEnough))
         if (!bet.numbers.split(',').every(isBigEnough)) {
@@ -96,12 +94,7 @@ class BetController {
           total += bet.price
 
         }
-
-
       }
-
-
-
 
       if (valueCart.min_cart_value < total) {
 
@@ -118,11 +111,8 @@ class BetController {
           bet.price = type.price
 
           await Bet.create(bet)
-
-   
-
-
         }
+
         await Mail.send(
           ['emails.new_bet'],
           { total },
@@ -144,52 +134,34 @@ class BetController {
 
       }
 
-
-
-
     } catch (err) {
       console.log(err)
       return response
         .status(err.status)
         .send(err);
     }
-
-
   }
 
   async show({ params, request, response, view }) {
     const bet = await Bet.findOrFail(params.id)
-
-
-    console.log(bet)
-
-
     return bet
   }
-
-
-
-
 
   async update({ params, request, response }) {
 
     const data = request.all()
-
     const bet = await Bet.findOrFail(params.id)
-
     const type = await Games.findOrFail(data.game_id)
 
     data.price = type.price
 
     await bet.merge(data)
     await bet.save()
-
     return bet
   }
 
   async destroy({ params, request, response }) {
     const bet = await Bet.findOrFail(params.id)
-
     await bet.delete()
   }
 }

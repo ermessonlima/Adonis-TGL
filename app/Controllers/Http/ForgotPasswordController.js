@@ -16,7 +16,6 @@ class ForgotPasswordController {
         user.token_created_at = new Date()
 
         await user.save()
-
         
         await Mail.send(
             ['emails.forgot_password'],
@@ -63,9 +62,6 @@ class ForgotPasswordController {
                 .send({ error: { message: 'Algo deu errado ao resetar senha' } })
         }
     }
-
-
-
 }
 
 module.exports = ForgotPasswordController

@@ -7,7 +7,7 @@ class Type {
 
   get rules() {
     return {
-      type: 'string|required|unique:types',
+      type: 'string|required|unique:games',
       description: 'string|required',
       range: 'number|required',
       price: 'number|required',

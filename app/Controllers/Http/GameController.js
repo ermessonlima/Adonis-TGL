@@ -23,7 +23,6 @@ class GameController {
     ])
 
     const games = await Games.create(data)
-
     return games
   }
 
