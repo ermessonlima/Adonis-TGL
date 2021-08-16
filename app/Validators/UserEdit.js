@@ -8,7 +8,6 @@ class UserEdit {
   get rules() {
     return {
       username: "required",
-      password: "required",
     };
   }
 }

@@ -20,7 +20,7 @@ class UserController {
                 message
                     .to(user.email)
                     .from('ermessonlimadossantos@hotmail.com', 'Ermesson')
-                    .subject('Recuperação de senha')
+                    .subject('Seja Bem-vindo!')
             }
         )
         return user

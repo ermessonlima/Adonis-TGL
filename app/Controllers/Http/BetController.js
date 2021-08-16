@@ -40,15 +40,24 @@ class BetController {
           .where('id', bet.game_id)
           .firstOrFail()
 
-        var lengthCart = await Games.query()
+          var lengthCart = await Games.query()
           .select('max_number')
           .where('id', bet.game_id)
           .firstOrFail()
 
+
+          var range = await Games.query()
+          .select('range')
+          .where('id', bet.game_id)
+          .firstOrFail()
+
+          console.log(range)
+
+          console.log(range.range)
         bet.price = type.price
 
         function isBigEnough(element) {
-          return element <= lengthCart.max_number && element >= 1;
+          return element <= range.range && element >= 1;
         }
 
         function hasDuplicates(array) {
@@ -57,23 +66,23 @@ class BetController {
 
         let formErros = false;
         console.log(bet)
-        console.log(bet.numbers.split(',').length != lengthCart.max_number)
+        console.log("b" + bet.numbers.split(',').length != lengthCart.max_number)
 
         if (bet.numbers.split(',').length != lengthCart.max_number) {
           formErros = true;
           return response.status(400).json(
             { error: {
-              menssage: `${'bet.types.type'} This ${lengthCart.max_number} only allows ${bet.numbers.split(',').length} numbers choosen`,
+              menssage: `You are betting to have numbers above what is allowed.`,
             }}
           )
         }
   
-        console.log(!bet.numbers.split(',').every(isBigEnough))
+        console.log("a" + !bet.numbers.split(',').every(isBigEnough))
         if (!bet.numbers.split(',').every(isBigEnough)) {
           formErros = true;
           return response.status(400).json(
             { error: {
-              menssage: `Número fora do intervalo de 1 à ${lengthCart.max_number}.`,
+              menssage: `Number out of range 1 to ${range.range}.`,
             }}
           )
         }
@@ -83,7 +92,7 @@ class BetController {
           formErros = true;
           return response.status(400).json(
             { error: {
-              menssage: `Números duplicados`,
+              menssage: `Duplicate numbers`,
             }}
           )
         }
@@ -99,7 +108,7 @@ class BetController {
       if (valueCart.min_cart_value < total) {
 
         for (let index = 0; index < bets.length; index++) {
-          console.log('e')
+
           const bet = bets[index];
 
           const type = await Games.query()

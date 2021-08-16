@@ -23,7 +23,7 @@ class BetSchema extends Schema {
         .onUpdate('CASCADE')
         .onDelete('CASCADE')
         .notNullable()
-      table.string('numbers').notNullable()
+        table.string('numbers').notNullable()
       table.float('price').notNullable()
       table.timestamps()
     })

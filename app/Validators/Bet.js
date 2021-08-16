@@ -7,8 +7,9 @@ class Bet {
 
   get rules() {
     return {
-      game_id: 'required',
-      numbers: 'required'
+      '*.*.color': 'required',
+      '*.*.game_id': 'required',
+      '*.*.numbers': 'required'
     }
   }
 }
