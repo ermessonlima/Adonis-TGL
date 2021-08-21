@@ -6,20 +6,48 @@ const Games = use("App/Models/Game");
 
 class BetController {
 
-  async index({ auth }) {
+  async index({ auth, request, pagination }) {
 
     const user_id = auth.user.id;
+
+    var arr 
+
+
+
+    if (pagination.arry) {
+      console.log('ssssssssssss')
+      const betsa = await Bet.query()
+        .where({ user_id })
+        .from('bets')
+        .whereIn('game_id', pagination.arry)
+
+        .where({ user_id })
+        .with('types', builder => {
+          builder.select('id', 'type', 'color')
+        }).paginate(
+          pagination.page,
+          pagination.limit);
+
+    
+      return betsa
+    }
+
+
     const bets = await Bet.query()
       .where({ user_id })
       .with('types', builder => {
         builder.select('id', 'type', 'color')
       })
-      .fetch();
+      .paginate(
+        pagination.page,
+        pagination.limit);
+
+
     return bets
   }
 
   async store({ request, response, auth }) {
-    console.log(auth.user.email)
+
     const data = request.all()
     const bets = (Object.values(data))
 
@@ -40,20 +68,17 @@ class BetController {
           .where('id', bet.game_id)
           .firstOrFail()
 
-          var lengthCart = await Games.query()
+        var lengthCart = await Games.query()
           .select('max_number')
           .where('id', bet.game_id)
           .firstOrFail()
 
 
-          var range = await Games.query()
+        var range = await Games.query()
           .select('range')
           .where('id', bet.game_id)
           .firstOrFail()
 
-          console.log(range)
-
-          console.log(range.range)
         bet.price = type.price
 
         function isBigEnough(element) {
@@ -65,35 +90,37 @@ class BetController {
         }
 
         let formErros = false;
-        console.log(bet)
-        console.log("b" + bet.numbers.split(',').length != lengthCart.max_number)
 
         if (bet.numbers.split(',').length != lengthCart.max_number) {
           formErros = true;
           return response.status(400).json(
-            { error: {
-              menssage: `You are betting to have numbers above what is allowed.`,
-            }}
-          )
-        }
-  
-        console.log("a" + !bet.numbers.split(',').every(isBigEnough))
-        if (!bet.numbers.split(',').every(isBigEnough)) {
-          formErros = true;
-          return response.status(400).json(
-            { error: {
-              menssage: `Number out of range 1 to ${range.range}.`,
-            }}
+            {
+              error: {
+                menssage: `You are betting to have numbers above what is allowed.`,
+              }
+            }
           )
         }
 
-        console.log(!hasDuplicates(bet.numbers.split(',')))
+        if (!bet.numbers.split(',').every(isBigEnough)) {
+          formErros = true;
+          return response.status(400).json(
+            {
+              error: {
+                menssage: `Number out of range 1 to ${range.range}.`,
+              }
+            }
+          )
+        }
+
         if (!hasDuplicates(bet.numbers.split(','))) {
           formErros = true;
           return response.status(400).json(
-            { error: {
-              menssage: `Duplicate numbers`,
-            }}
+            {
+              error: {
+                menssage: `Duplicate numbers`,
+              }
+            }
           )
         }
 
@@ -126,12 +153,12 @@ class BetController {
           ['emails.new_bet'],
           { total },
           message => {
-              message
-                  .to(auth.user.email)
-                  .from('ermessonlimadossantos@hotmail.com', 'Ermesson')
-                  .subject('Nova Aposta!')
+            message
+              .to(auth.user.email)
+              .from('ermessonlimadossantos@hotmail.com', 'Ermesson')
+              .subject('Nova Aposta!')
           }
-      )
+        )
         return response.status(200).send({ message: 'Cadastrado com Sucesso!' })
 
       } else {
@@ -144,7 +171,7 @@ class BetController {
       }
 
     } catch (err) {
-      console.log(err)
+
       return response
         .status(err.status)
         .send(err);
@@ -152,7 +179,7 @@ class BetController {
   }
 
   async show({ params, request, response, view }) {
-    const bet = await Bet.findOrFail(params.id)
+    const bet = await Bet.findOrFail(params.game_id)
     return bet
   }
 
